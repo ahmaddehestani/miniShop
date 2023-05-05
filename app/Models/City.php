@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string name
  */
 
-class city extends Model
+class City extends Model
 {
     use HasFactory;
     protected $table = 'cities';
