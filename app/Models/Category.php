@@ -23,4 +23,9 @@ class Category extends Model
         'description',
     ];
     protected $table = 'categories';
+
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
+    }
 }
