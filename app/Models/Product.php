@@ -23,7 +23,7 @@ class Product extends Model
     protected $table = 'products';
 
     protected $fillable = [
-
+        'name',
         'brand_id',
         'category_id',
         'primary_image',
@@ -32,4 +32,9 @@ class Product extends Model
         'quantity',
         'delivery_amount',
     ];
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 }

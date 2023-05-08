@@ -6,6 +6,7 @@ use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Expr\FuncCall;
 
 class BrandController extends ApiController
 {
@@ -75,5 +76,10 @@ class BrandController extends ApiController
     {
         $brand->delete();
         return $this->successResponse(new BrandResource($brand), 200);
+    }
+
+    public function products(Brand $brand)
+    {
+        return $this->successResponse(new BrandResource($brand->load('products')));
     }
 }
