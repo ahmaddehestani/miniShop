@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,13 +20,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::apiResource('brands', BrandController::class);
-Route::get('brands/{brand}/products', [BrandController::class, 'products']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/logOut', [AuthController::class, 'logOut']);
 
-Route::apiResource('categories', CategoryController::class);
-Route::get('categories/{category}/children', [CategoryController::class, 'children']);
-Route::apiResource('products', ProductController::class);
+    Route::apiResource('brands', BrandController::class);
+    Route::get('brands/{brand}/products', [BrandController::class, 'products']);
+
+    Route::apiResource('categories', CategoryController::class);
+    Route::get('categories/{category}/children', [CategoryController::class, 'children']);
+    Route::apiResource('products', ProductController::class);
+
+    Route::post('products/addToCart', [OrderController::class, 'addToCart']);
+    Route::post('products/transaction', [OrderController::class, 'transaction']);
+});
