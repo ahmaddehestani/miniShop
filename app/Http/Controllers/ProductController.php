@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -27,22 +28,9 @@ class ProductController extends ApiController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'brand_id' => 'required',
-            'category_id' => 'required',
-            'primary_image' => 'required|image',
-            'description' => 'required',
-            'price' => 'integer',
-            'quantity' => 'integer',
-            'delivery_amount' => 'integer',
-            'images.*' => 'image'
-        ]);
-        if ($validator->failed()) {
-            return $this->errorResponse($validator->messages(), 422);
-        }
+
         $primary_image_name = Carbon::now()->microsecond . '.' . $request->primary_image->extension();
         $request->primary_image->storeAs('images/products', $primary_image_name, 'public');
         if ($request->has('images')) {

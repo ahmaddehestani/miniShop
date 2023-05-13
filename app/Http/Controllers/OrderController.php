@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddtoCartRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -11,19 +12,9 @@ use Illuminate\Support\Facades\Validator;
 
 class OrderController extends ApiController
 {
-    public function addToCart(Request $request)
+    public function addToCart(AddtoCartRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
-            'order_items' => 'required',
-            'order_items.*.product_id' => 'required',
-            'order_items.*.quantity' => 'required'
 
-
-        ]);
-        if ($validator->failed()) {
-            return $this->errorResponse($validator->messages(), 422);
-        }
         $total_amount = 0;
         $delivery_amount = 0;
         foreach ($request->order_items as $order_item) {

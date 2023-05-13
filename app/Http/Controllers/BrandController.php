@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateBrandRequest;
+use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
@@ -26,15 +28,9 @@ class BrandController extends ApiController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateBrandRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:brands',
-            'display_name' => 'required|unique:brands'
-        ]);
-        if ($validator->failed()) {
-            return $this->errorResponse($validator->messages(), 422);
-        }
+
         $brand = Brand::create([
             'name' => $request->name,
             'display_name' => $request->display_name
@@ -53,15 +49,8 @@ class BrandController extends ApiController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Brand $brand)
+    public function update(UpdateBrandRequest $request, Brand $brand)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:brands',
-            'display_name' => 'required|unique:brands'
-        ]);
-        if ($validator->failed()) {
-            return $this->errorResponse($validator->messages(), 422);
-        }
         $brand->update([
             'name' => $request->name,
             'display_name' => $request->display_name
